@@ -1,5 +1,4 @@
 @extends('base')
-
 @section('title', 'Register')
 
 <div class="d-flex justify-content-center align-items-center vh-100" style="background-color: #3b82f6;">

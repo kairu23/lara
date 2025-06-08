@@ -1,6 +1,11 @@
 @extends('base')
-
 @section('title', 'Log In')
+
+@if(session('fail'))
+    <div id="alertBox" class="alert alert-danger position-fixed top-0 start-50 translate-middle-x mt-3" role="alert" style="z-index: 1050;">
+        {{ Session::get('fail') }}
+    </div>
+@endif
 
 <div class="d-flex justify-content-center align-items-center vh-100" style="background-color: #3b82f6;">
 

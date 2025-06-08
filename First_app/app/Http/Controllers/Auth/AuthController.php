@@ -47,9 +47,23 @@ class AuthController extends Controller
         ]);
 
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-            return redirect(route(name:'std.index'))->with('success', 'Logged in successfully!');
+            $request->session()->regenerate();
+            return redirect(route('std.index'))->with('success', 'Logged in successfully!');
+        }else{
+            return redirect(route('auth.login'))->with('fail', 'Logged in failed miserably!');
         }
-        return redirect(route(name: 'auth.login'))->with('fail', 'Logged in Failed miserably!');
+        
     }
+
+    public function logoutUser(Request $request)
+{
+    Auth::logout();
+
+    $request->session()->invalidate(); 
+    $request->session()->flush();
+    $request->session()->regenerateToken(); 
+
+    return redirect()->route('auth.login')->with('success', 'Logged out successfully!');
+}
 
 }
