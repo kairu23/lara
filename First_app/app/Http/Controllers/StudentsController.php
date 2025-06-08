@@ -17,7 +17,7 @@ class StudentsController extends Controller
     public function newStudent(Request $request)
     {
         $request->validate([
-            'stdName' => 'required|max:255',
+            'stdName' => 'required|max:300',
             'stdAge' => 'required|numeric',
         ]);
 
@@ -28,26 +28,36 @@ class StudentsController extends Controller
         return redirect()->route('std.index')->with('success', 'Student created successfully.');
     }
 
-    public function updateStudent(Request $request, $id)
+    public function destroy($id)
+{
+    $student = Students::find($id);
+
+    if (!$student) {
+        return redirect()->back()->with('error', 'Student not found.');
+    }
+
+    $student->delete();
+    return redirect()->back()->with('success', 'Student deleted successfully.');
+}
+public function update(Request $request, $id)
 {
     $request->validate([
         'stdName' => 'required|string|max:255',
-        'stdAge' => 'required|integer|min:1',
+        'stdAge' => 'required|integer',
     ]);
 
-    $student = Students::findOrFail($id);
+    $student = Students::find($id);
+
+    if (!$student) {
+        return redirect()->back()->with('error', 'Student not found.');
+    }
+
     $student->name = $request->stdName;
     $student->age = $request->stdAge;
     $student->save();
 
-    return redirect()->route('std.index')->with('success', 'Student updated successfully!');
+    return redirect()->back()->with('success', 'Student updated successfully.');
 }
 
-public function deleteStudent($id)
-{
-    $student = Students::findOrFail($id);
-    $student->delete();
-
-    return redirect()->route('std.index')->with('success', 'Student deleted successfully!');
-}
+    
 }
