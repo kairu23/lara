@@ -1,22 +1,15 @@
 <?php
-
+use App\Http\Controllers\StudentsController;
 use Illuminate\Support\Facades\Route;
-use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// Display the student list
+Route::get('/', [StudentsController::class, 'index'])->name('std.index');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Create a new student
+Route::post('/create-student', [StudentsController::class, 'newStudent'])->name('std.create');
 
-Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
+// Update student details
+Route::put('/update-student/{id}', [StudentsController::class, 'updateStudent'])->name('std.update');
 
-    Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-    Volt::route('settings/password', 'settings.password')->name('settings.password');
-    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
-});
-
-require __DIR__.'/auth.php';
+// Delete a student
+Route::delete('/delete-student/{id}', [StudentsController::class, 'deleteStudent'])->name('std.delete');
